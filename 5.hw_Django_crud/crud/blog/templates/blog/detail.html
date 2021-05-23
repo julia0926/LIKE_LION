@@ -1,0 +1,21 @@
+{% extends 'blog/base.html' %} 
+{% block content %} 
+{% load static %}
+
+<div class="post-preview">
+    <a href="post.html">
+        <h2 class="post-title">{{ blog.title }}</h2>
+        <h3 class="post-subtitle">{{ blog.content }}</h3>
+    </a>
+    <p class="post-meta">
+        Posted by
+        <a href="#!">{{ blog.writer }}</a>
+        {{ blog.pub_date }}
+    </p>
+    <a class="btn btn-primary float-right" href="{% url 'edit' blog.id %}"> 수정하기 →</a>
+    <a class="btn btn-primary float-right" href="{% url 'delete' blog.id %}"> 삭제하기 →</a>
+</div>
+
+{% endblock %}
+
+

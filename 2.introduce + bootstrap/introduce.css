@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'Bazzi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/Bazzi.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+    font-family: 'Bazzi';
+    background-image: url(https://image.freepik.com/free-vector/cute-koala-with-flower-crown-seamless-repeating-pattern-wallpaper-cute-seamless-pattern_42349-843.jpg);
+    background-size: cover;  
+    padding: auto;  
+}
+article{
+    padding: 60px auto;
+    margin: 30px auto;
+}
+h1{
+    font-size: 50px;
+    color: mediumpurple;
+}
+h2{
+    font-size: 35px;
+}
+h3{
+    font-size: 25px;
+}
+h1,h2{
+    text-align: center;
+}
+nav ol{
+    padding-top: 10px;
+    text-align: center;
+}
+nav ol li{
+    display: inline;
+    border-left: 1px solid #999;
+    padding: 0 10px;
+    font-size: 25px;
+}
+nav ol li:first-child{border-left: none;}
+
+table{
+    width: 40%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td{
+    border: 1px solid black;
+    padding: 7px;
+}

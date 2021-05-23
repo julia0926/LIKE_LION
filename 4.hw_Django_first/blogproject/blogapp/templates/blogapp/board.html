@@ -1,0 +1,8 @@
+{% extends 'blogapp/layout.html' %}
+{% block content %}
+{% for blogs in blogs.all %}
+<h1>{{ blogs.title }}</h1>
+<p>{{ blogs.pub_date }}</p>
+<h2>{{ blogs.body }}</h2> <hr>
+{% endfor %}
+{% endblock %}
