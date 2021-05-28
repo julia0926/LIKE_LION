@@ -21,10 +21,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',blog.views.main,name='main'),
-    path('<str:id>', blog.views.detail, name="detail"), # 데이터 베이스의 id값, 수정 & 삭제 기능과 같은 패턴 
-    path('write/create/', blog.views.create, name="create"),
-    path('edit/<str:id>',blog.views.edit,name="edit"),
-    #path('update/<str:id>',blog.views.update,name="update"),
-    path('delete/<str:id>',blog.views.delete,name="delete"),
+    path('',blog.views.main,name='main'), #제일 첫 화면 메인
+    path('<str:id>', blog.views.detail, name="detail"), # 디테일페이지 경로(id 값에 따라서 상세페이지가 다르게 보임 )
+    path('write/create/', blog.views.create, name="create"), #글 작성페이지 경로 (forms를 사용하여 함수를 따로 작성하여 create되게)
+    path('edit/<str:id>',blog.views.edit,name="edit"), #수정페이지 경로 (디테일과 마찬가지로 글 id값에 따라 다르게 보여아함)
+    path('delete/<str:id>',blog.views.delete,name="delete"), #삭제페이지 (수정페이지와 동일)
 ]

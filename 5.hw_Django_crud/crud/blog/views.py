@@ -6,7 +6,7 @@ from .models import Blog
 
 #메인페이지
 def main(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all() #Blog 객체의 값들을 모두 가져옴
     return render(request, 'blog/main.html', {'blogs':blogs})
 
 # 글 작성 페이지 
@@ -15,27 +15,27 @@ def write(request):
 
 #글 작성 함수
 def create(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form=form.save(commit=False)
+    if request.method == 'POST': #POST 메소드 방식인지 확인 
+        form = PostForm(request.POST) #POST방식으로 요청받은 form을 변수에 저장
+        if form.is_valid(): #유효한지 검사
+            form=form.save(commit=False) 
             form.pub_date=timezone.now()
             form.save()
-            return redirect('main')
-    else:
+            return redirect('main') #form을 잘 입력했으면 main페이지로 이동 
+    else: #유효하지 않으면 다시 검사해서 
         form=PostForm
-        return render(request,'blog/write.html',{'form':form})
+        return render(request,'blog/write.html',{'form':form}) #다시 작성하게함
 
 # 디테일 페이지
-def detail(request, id): 
-    blog = get_object_or_404(Blog, pk = id) 
+def detail(request, id): #글 마다 고유번호를 받아
+    blog = get_object_or_404(Blog, pk = id)  #없는 객체 번호를 호출할 경우에는 에러 페이지를 호출, pk는 구분자
     return render(request, 'blog/detail.html', {'blog' : blog})
 
-#수정페이지
-def edit(request,id):
+#수정페이지 (write페이지와 동일)
+def edit(request,id): 
     post = get_object_or_404(Blog,id=id)
     if request.method == 'POST':
-        form = PostForm(request.POST,instance=post)
+        form = PostForm(request.POST,instance=post) #수정해야 할 글의 id를 함수에게 전달
         if form.is_valid():
             form.save(commit=False)
             form.save()
@@ -46,6 +46,6 @@ def edit(request,id):
 
 #삭제페이지
 def delete(request, id):
-    delete_blog=Blog.objects.get(id=id)
-    delete_blog.delete()
-    return redirect('main')
+    delete_blog=Blog.objects.get(id=id) #삭제할 글의 id를 가져와
+    delete_blog.delete() # 삭제
+    return redirect('main') #메인페이지로 이동 
