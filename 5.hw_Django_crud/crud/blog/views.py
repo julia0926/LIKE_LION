@@ -1,6 +1,7 @@
+from django.http import request
 from django.shortcuts import redirect, render,get_object_or_404 
 from django.utils import timezone
-from .forms import PostForm
+from .forms import PostForm,CommentForm
 from .models import Blog
 # Create your views here.
 
@@ -26,11 +27,6 @@ def create(request):
         form=PostForm
         return render(request,'blog/write.html',{'form':form}) #다시 작성하게함
 
-# 디테일 페이지
-def detail(request, id): #글 마다 고유번호를 받아
-    blog = get_object_or_404(Blog, pk = id)  #없는 객체 번호를 호출할 경우에는 에러 페이지를 호출, pk는 구분자
-    return render(request, 'blog/detail.html', {'blog' : blog})
-
 #수정페이지 (write페이지와 동일)
 def edit(request,id): 
     post = get_object_or_404(Blog,id=id)
@@ -49,3 +45,18 @@ def delete(request, id):
     delete_blog=Blog.objects.get(id=id) #삭제할 글의 id를 가져와
     delete_blog.delete() # 삭제
     return redirect('main') #메인페이지로 이동 
+
+#디테일 페이지 + 댓글
+def detail(request, id):
+    blog = get_object_or_404(Blog, id = id) 
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.post_id=blog
+            comment.text=form.cleaned_data['text']
+            comment.save()
+            return redirect('detail',id)
+    else:
+        form = CommentForm()
+        return render(request, 'blog/detail.html', {'blog':blog,'form':form})
