@@ -17,8 +17,6 @@ from django.contrib import admin
 from django.urls import path
 import blog.views
 
-from django.conf import settings
-from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',blog.views.main,name='main'), #제일 첫 화면 메인
@@ -26,4 +24,6 @@ urlpatterns = [
     path('write/create/', blog.views.create, name="create"), #글 작성페이지 경로 (forms를 사용하여 함수를 따로 작성하여 create되게)
     path('edit/<str:id>',blog.views.edit,name="edit"), #수정페이지 경로 (디테일과 마찬가지로 글 id값에 따라 다르게 보여아함)
     path('delete/<str:id>',blog.views.delete,name="delete"), #삭제페이지 (수정페이지와 동일)
+    path('hashtag/',blog.views.hashtagform,name="hashtag"), #해쉬태그 추가하는 페이지
+    path('search/<int:hashtag_id>',blog.views.search,name="search"), #해쉬태그 검색 페이지
 ]

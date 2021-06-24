@@ -1,14 +1,15 @@
 from django.http import request
 from django.shortcuts import redirect, render,get_object_or_404 
 from django.utils import timezone
-from .forms import PostForm,CommentForm
-from .models import Blog
+from .forms import PostForm,CommentForm,HashtagForm
+from .models import Blog,Hashtag
 # Create your views here.
 
 #메인페이지
 def main(request):
     blogs = Blog.objects.all() #Blog 객체의 값들을 모두 가져옴
-    return render(request, 'blog/main.html', {'blogs':blogs})
+    hashtags = Hashtag.objects.all()
+    return render(request, 'blog/main.html', {'blogs':blogs,'hashtags':hashtags})
 
 # 글 작성 페이지 
 def write(request):
@@ -35,6 +36,7 @@ def edit(request,id):
         if form.is_valid():
             form.save(commit=False)
             form.save()
+            form.save_m2m()
             return redirect('main')
     else:
         form=PostForm(instance=post)
@@ -60,3 +62,25 @@ def detail(request, id):
     else:
         form = CommentForm()
         return render(request, 'blog/detail.html', {'blog':blog,'form':form})
+
+#해쉬태그 함수
+def hashtagform(request,hashtag=None):
+    if request.method == 'POST':
+        form = HashtagForm(request.POST,instance=hashtag)
+        if form.is_valid():
+            hashtag = form.save(commit=False)
+            if Hashtag.objects.filter(name=form.cleaned_data['name']):
+                form = HashtagForm()
+                error_message= "이미 존재하는 해시태그 입니다."
+                return render(request, 'blog/hashtag.html',{'form':form,'error_message':error_message})
+            else:
+                hashtag.name=form.cleaned_data['name']
+                hashtag.save()
+            return redirect('main')
+    else:
+        form = HashtagForm(instance=hashtag)
+        return render(request, 'blog/hashtag.html',{'form':form})
+
+def search(request, hashtag_id):
+        hashtag = get_object_or_404(Hashtag, pk=hashtag_id)
+        return render(request, 'blog/search.html', {'hashtag':hashtag})
