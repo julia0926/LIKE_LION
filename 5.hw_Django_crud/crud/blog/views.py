@@ -18,7 +18,7 @@ def write(request):
 #글 작성 함수
 def create(request):
     if request.method == 'POST': #POST 메소드 방식인지 확인 
-        form = PostForm(request.POST) #POST방식으로 요청받은 form을 변수에 저장
+        form = PostForm(request.POST,request.FILES) #POST방식으로 요청받은 form을 변수에 저장
         if form.is_valid(): #유효한지 검사
             form=form.save(commit=False) 
             form.pub_date=timezone.now()
@@ -32,12 +32,12 @@ def create(request):
 def edit(request,id): 
     post = get_object_or_404(Blog,id=id)
     if request.method == 'POST':
-        form = PostForm(request.POST,instance=post) #수정해야 할 글의 id를 함수에게 전달
+        form = PostForm(request.POST, request.FILES, instance=post) #수정해야 할 글의 id를 함수에게 전달
         if form.is_valid():
             form.save(commit=False)
             form.save()
             form.save_m2m()
-            return redirect('main')
+            return redirect('detail',id)
     else:
         form=PostForm(instance=post)
         return render(request, 'blog/edit.html',{'form':form})

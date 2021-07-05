@@ -7,6 +7,7 @@ class Blog(models.Model): #
     pub_date = models.DateTimeField('data published') #글 쓰는 시각
     content = models.TextField() #글 내용 (글자수 제한없이 )
     hashtags = models.ManyToManyField('Hashtag',blank=True)
+    image = models.ImageField(upload_to='images/',blank=True)
 
     def __str__(self): #글 제목을 자신으로 받아서 넣음
         return self.title

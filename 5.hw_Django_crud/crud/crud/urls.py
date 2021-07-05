@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls.conf import include
 import blog.views
 
 urlpatterns = [
@@ -26,4 +29,5 @@ urlpatterns = [
     path('delete/<str:id>',blog.views.delete,name="delete"), #삭제페이지 (수정페이지와 동일)
     path('hashtag/',blog.views.hashtagform,name="hashtag"), #해쉬태그 추가하는 페이지
     path('search/<int:hashtag_id>',blog.views.search,name="search"), #해쉬태그 검색 페이지
-]
+    path('account/',include('account.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
