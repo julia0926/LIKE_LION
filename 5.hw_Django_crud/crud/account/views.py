@@ -1,19 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-
-# Create your views here.
+from django.contrib.auth.forms import AuthenticationForm # 로그인, 회원가입 폼 
+from .forms import RegisterForm
+#회원가입 
 def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
+    if request.method == 'POST': #Post 방식 
+        form = RegisterForm(request.POST)
+        if form.is_valid(): #유효성 검사 
             user = form.save()
             auth.login(request, user)
             return redirect('main')
         else:
             return render(request, 'account/signup.html', {'form':form})
-    else:
-        form = UserCreationForm()
+    else: #get 방식 
+        form = RegisterForm()
         return render(request, 'account/signup.html', {'form':form})
 
 def login(request):
