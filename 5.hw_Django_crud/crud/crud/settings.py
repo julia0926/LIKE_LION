@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zr$(wme*ri&j*27n@c^g=^1wz$n0g@^sm$vnk=vk$!^#^xx_9d'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-zr$(wme*ri&j*27n@c^g=^1wz$n0g@^sm$vnk=vk$!^#^xx_9d')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DJANGO_DBUG', True))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"] #모든 도메인 접속 허용 
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,3 +137,7 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'
 
 AUTH_USER_MODEL='account.CustomUser'
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age = 500)
+DATABASES['default'].update(db_from_env)
